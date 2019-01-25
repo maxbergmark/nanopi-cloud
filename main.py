@@ -1,4 +1,4 @@
-from redis import redis
+from redis import Redis
 from rq import Queue
 import tasks
 import time
