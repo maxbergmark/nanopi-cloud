@@ -13,4 +13,8 @@ def ping():
 
 @parallel
 def pull():
-	run('cd Documents/nanopi-cloud;git pull')
+	run('cd Documents/nanopi-cloud; git pull')
+
+@parallel
+def start():
+	run('cd Documents/nanopi-cloud; python3 worker.py')
