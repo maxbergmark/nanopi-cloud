@@ -1,8 +1,6 @@
-from fabric import Connection
-from redis import Redis
+from fabric.api import *
 
-hosts = ['elissa-0', 'elissa-1']
-connections = [Connection(host) for host in hosts]
+env.hosts = ['elissa-0', 'elissa-1']
 
 @parallel
 def update():
