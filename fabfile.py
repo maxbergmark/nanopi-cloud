@@ -9,4 +9,4 @@ def update():
 
 @parallel
 def ping():
-	run('hostname -i')
+	run('echo "$(hostname) is up!')
