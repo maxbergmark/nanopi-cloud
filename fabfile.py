@@ -6,3 +6,7 @@ env.key_filename = '~/.ssh/elissa_cluster'
 @parallel
 def update():
 	sudo('apt update')
+
+@parallel
+def ping():
+	run('hostname -i')
