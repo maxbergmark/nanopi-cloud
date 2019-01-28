@@ -3,6 +3,10 @@ from redis import Redis
 from rq import Queue
 import sys
 
+from html import unescape
+from lxml import html
+import requests
+
 OWN_FILE = 'forty_game_bots.py'
 # File where to store the downloaded bots
 AUTO_FILE = 'auto_bots.py'

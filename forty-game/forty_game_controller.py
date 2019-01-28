@@ -3,14 +3,11 @@ import re
 import json
 import math
 import random
-import requests
 import sys
 import time
 from numpy import cumsum
 
 from collections import defaultdict
-from html import unescape
-from lxml import html
 # from multiprocessing import Pool
 from os import path, rename, remove
 from sys import stderr
@@ -23,15 +20,6 @@ DEBUG = False
 # If your terminal supports ANSI, try setting this to true
 ANSI = False
 # File to keep base class and own bots
-OWN_FILE = 'forty_game_bots.py'
-# File where to store the downloaded bots
-AUTO_FILE = 'auto_bots.py'
-# If you want to use up all your quota & re-download all bots
-DOWNLOAD = False
-# If you want to ignore a specific user's bots (eg. your own bots): add to list
-IGNORE = []
-# The API-request to get all the bots
-URL = "https://api.stackexchange.com/2.2/questions/177765/answers?page=%s&pagesize=100&order=desc&sort=creation&site=codegolf&filter=!bLf7Wx_BfZlJ7X"
 
 
 def print_str(x, y, string):
