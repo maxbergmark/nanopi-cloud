@@ -15,7 +15,6 @@ from lxml import html
 from os import path, rename, remove
 from sys import stderr
 from time import strftime
-from auto_bots import *
 
 
 # If you want to see what each bot decides, set this to true

@@ -72,21 +72,19 @@ print()
 c = Redis(host = "elissa-0")
 q = Queue(connection = c)
 
-jobs = [q.enqueue(run_simulation, (i, bots_per_game, games_per_thread, bots)) for i in range(threads)]
-# for i in range(10):
-	# jobs.append(q.enqueue(tasks.newkeys, 1024))
-while any(not job.is_finished for job in jobs):
-	time.sleep(0.1)
+t0 = time.time()
+# jobs = [q.enqueue(run_simulation, (i, bots_per_game, games_per_thread, bots)) for i in range(threads)]
+# while any(not job.is_finished for job in jobs):
+	# time.sleep(0.1)
+# results = [job.result for job in jobs]
 
-results = [job.result for job in jobs]
-
+results = [run_simulation(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
 # with Pool(threads) as pool:
-	# t0 = time.time()
 	# results = pool.starmap(
 		# run_simulation, 
 		# [(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
 	# )
-	# t1 = time.time()
+t1 = time.time()
 if not DEBUG:
 	total_bot_stats = [r[0] for r in results]
 	total_game_stats = [r[1] for r in results]
