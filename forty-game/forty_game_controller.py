@@ -99,11 +99,11 @@ class Controller:
 	# each bot has participated in a game
 	def simulate_games(self):
 		for game in range(self.games):
-			if self.games > 100:
-				if game % (self.games // 100) == 0 and not DEBUG:
-					if self.thread_id == 0 or ANSI:
-						progress = (game+1) / self.games
-						self.print_progress(progress)
+			# if self.games > 100:
+				# if game % (self.games // 100) == 0 and not DEBUG:
+					# if self.thread_id == 0 or ANSI:
+						# progress = (game+1) / self.games
+						# self.print_progress(progress)
 			game_bot_indices = random.sample(
 				range(self.number_of_bots), 
 				self.bots_per_game

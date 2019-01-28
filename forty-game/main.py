@@ -178,7 +178,9 @@ if __name__ == '__main__':
 		ttl = 1e6, result_ttl = 1e6, timeout = 1e6
 	) for i in range(threads)]
 	while any(not job.is_finished for job in jobs):
-		time.sleep(0.1)
+		finished = sum(job.is_finished for job in jobs)
+		print("\r\t%d/%d finished" % (finished, threads))
+		time.sleep(0.2)
 	results = [job.result for job in jobs]
 
 	# results = [run_simulation(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
