@@ -15,4 +15,4 @@ while any(not job.is_finished for job in jobs):
 t1 = time.time()
 
 print(t1-t0)
-print(jobs[0])
+print(jobs[0].result)
