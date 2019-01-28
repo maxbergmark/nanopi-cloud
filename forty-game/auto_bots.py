@@ -77,7 +77,7 @@ class Gladiolen(Bot):
                 yield True
             yield False
 
-
+"""
 # User: Mostly Harmless
 class NeoBot(Bot):
     def __init__(self, index, end_score):
@@ -119,7 +119,7 @@ class NeoBot(Bot):
             ind += 1
             self.last_state[-1] = (self.last_state[-1] + 1) % (len(self.last_state))
         return 1 + res
-
+"""
 
 # User: histocrat
 class BePrepared(Bot):
@@ -348,7 +348,7 @@ class GamblersFallacy(Bot):
                 break
         yield False
 
-
+'''
 # User: Dani O
 class HarkonnenBot(Bot):
     """
@@ -481,7 +481,7 @@ class TleilaxuBot(Bot):
         tmp_scores, ghola = scores[:], self.axolotl(self.find_leader(scores))
         while True:
             yield self.interrogate(ghola, tmp_scores, last_round)
-
+'''
 
 # User: Christian Sievers
 class Rebel(Bot):
