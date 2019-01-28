@@ -168,12 +168,12 @@ if __name__ == '__main__':
 	q = Queue(connection = c)
 
 	t0 = time.time()
-	# jobs = [q.enqueue(run_simulation, (i, bots_per_game, games_per_thread, bots)) for i in range(threads)]
-	# while any(not job.is_finished for job in jobs):
-		# time.sleep(0.1)
-	# results = [job.result for job in jobs]
+	jobs = [q.enqueue(run_simulation, (i, bots_per_game, games_per_thread, bots)) for i in range(threads)]
+	while any(not job.is_finished for job in jobs):
+		time.sleep(0.1)
+	results = [job.result for job in jobs]
 
-	results = [run_simulation(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
+	# results = [run_simulation(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
 	# with Pool(threads) as pool:
 		# results = pool.starmap(
 			# run_simulation, 
