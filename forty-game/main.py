@@ -1,11 +1,104 @@
 
 from redis import Redis
 from rq import Queue
-from forty_game_controller import *
 import sys
-from auto_bots import *
+
+OWN_FILE = 'forty_game_bots.py'
+# File where to store the downloaded bots
+AUTO_FILE = 'auto_bots.py'
+# If you want to use up all your quota & re-download all bots
+DOWNLOAD = False
+# If you want to ignore a specific user's bots (eg. your own bots): add to list
+IGNORE = []
+# The API-request to get all the bots
+URL = "https://api.stackexchange.com/2.2/questions/177765/answers?page=%s&pagesize=100&order=desc&sort=creation&site=codegolf&filter=!bLf7Wx_BfZlJ7X"
+
+
+# Make a stack-API request for the n-th page
+def req(n):
+	req = requests.get(URL % n)
+	req.raise_for_status()
+	return req.json()
+
+# Pull all the answers via the stack-API
+def get_answers():
+	n = 1
+	api_ans = req(n)
+	answers = api_ans['items']
+	while api_ans['has_more']:
+		n += 1
+		if api_ans['quota_remaining']:
+			api_ans = req(n)
+			answers += api_ans['items']
+		else:
+			break
+
+	m, r = api_ans['quota_max'], api_ans['quota_remaining']
+	if 0.1 * m > r:
+		print(" > [WARN]: only %s/%s API-requests remaining!" % (r,m), file=stderr)
+
+	return answers
+
+
+def download_players():
+	players = {}
+
+	for ans in get_answers():
+		name = unescape(ans['owner']['display_name'])
+		bots = []
+
+		root = html.fromstring('<body>%s</body>' % ans['body'])
+		for el in root.findall('.//code'):
+			code = el.text
+			if re.search(r'^class \w+\(\w*Bot\):.*$', code, flags=re.MULTILINE):
+				bots.append(code)
+
+		if not bots:
+			print(" > [WARN] user '%s': couldn't locate any bots" % name, file=stderr)
+		elif name in players:
+			players[name] += bots
+		else:
+			players[name] = bots
+
+	return players
+
+
+# Download all bots from codegolf.stackexchange.com
+def download_bots():
+	print('pulling bots from the interwebs..', file=stderr)
+	try:
+		players = download_players()
+	except Exception as ex:
+		print('FAILED: (%s)' % ex, file=stderr)
+		exit(1)
+
+	if path.isfile(AUTO_FILE):
+		print(' > move: %s -> %s.old' % (AUTO_FILE,AUTO_FILE), file=stderr)
+		if path.exists('%s.old' % AUTO_FILE):
+			remove('%s.old' % AUTO_FILE)
+		rename(AUTO_FILE, '%s.old' % AUTO_FILE)
+
+	print(' > writing players to %s' % AUTO_FILE, file=stderr)
+	f = open(AUTO_FILE, 'w+', encoding='utf8')
+	f.write('# -*- coding: utf-8 -*- \n')
+	f.write('# Bots downloaded from https://codegolf.stackexchange.com/questions/177765 @ %s\n\n' % strftime('%F %H:%M:%S'))
+	with open(OWN_FILE, 'r') as bfile:
+		f.write(bfile.read()+'\n\n\n# Auto-pulled bots:\n\n')
+	for usr in players:
+		if usr not in IGNORE:
+			for bot in players[usr]:
+				f.write('# User: %s\n' % usr)
+				f.write(bot+'\n\n')
+	f.close()
+
+	print('OK: pulled %s bots' % sum(len(bs) for bs in players.values()))
+
+
+
 
 if __name__ == '__main__':
+	from forty_game_controller import *
+	from auto_bots import *
 
 	games = 10000
 	bots_per_game = 8
