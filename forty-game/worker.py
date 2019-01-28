@@ -2,8 +2,6 @@ from multiprocessing import cpu_count, Process
 from redis import Redis
 from rq import Connection, Worker
 
-import tasks
-
 def process():
 	c = Redis(host = 'elissa-0')
 	w = Worker(['default'], connection = c)
