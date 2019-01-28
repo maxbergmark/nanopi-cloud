@@ -179,7 +179,7 @@ if __name__ == '__main__':
 	) for i in range(threads)]
 	while any(not job.is_finished for job in jobs):
 		finished = sum(job.is_finished for job in jobs)
-		print("\r\t%d/%d finished" % (finished, threads))
+		print("\r\t%d/%d finished" % (finished, threads), flush = True, end = "")
 		time.sleep(0.2)
 	results = [job.result for job in jobs]
 
