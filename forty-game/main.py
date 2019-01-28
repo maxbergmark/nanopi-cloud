@@ -182,6 +182,7 @@ if __name__ == '__main__':
 		print("\r\t%d/%d finished" % (finished, threads), flush = True, end = "")
 		time.sleep(0.2)
 	results = [job.result for job in jobs]
+	print("\r\t%d/%d finished" % (threads, threads), flush = True, end = "")
 
 	# results = [run_simulation(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
 	# with Pool(threads) as pool:
