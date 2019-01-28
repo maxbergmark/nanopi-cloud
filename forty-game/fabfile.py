@@ -20,4 +20,4 @@ def pull():
 
 @parallel
 def start():
-	run('cd Documents/nanopi-cloud; python3 worker.py')
+	run('cd Documents/nanopi-cloud/forty-game; python3 worker.py')
