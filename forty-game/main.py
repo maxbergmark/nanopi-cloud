@@ -3,6 +3,7 @@ from redis import Redis
 from rq import Queue
 from forty_game_controller import *
 import sys
+from auto_bots import *
 
 games = 10000
 bots_per_game = 8
@@ -34,10 +35,10 @@ if DOWNLOAD:
 	download_bots()
 	exit() # Before running other's code, you might want to inspect it..
 
-if path.isfile(AUTO_FILE):
-	exec('from %s import *' % AUTO_FILE[:-3])
-else:
-	exec('from %s import *' % OWN_FILE[:-3])
+# if path.isfile(AUTO_FILE):
+	# exec('from %s import *' % AUTO_FILE[:-3])
+# else:
+	# exec('from %s import *' % OWN_FILE[:-3])
 
 bots = get_all_bots()
 
