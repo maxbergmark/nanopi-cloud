@@ -11,10 +11,14 @@ from numpy import cumsum
 from collections import defaultdict
 from html import unescape
 from lxml import html
-from multiprocessing import Pool
+# from multiprocessing import Pool
 from os import path, rename, remove
 from sys import stderr
 from time import strftime
+
+from redis import Redis
+from rq import Queue
+
 
 # If you want to see what each bot decides, set this to true
 # Should only be used with one thread and one game
@@ -596,14 +600,26 @@ if __name__ == "__main__":
 		print("\tFor help running the script, use the -h flag")
 	print()
 
-	with Pool(threads) as pool:
-		t0 = time.time()
-		results = pool.starmap(
-			run_simulation, 
-			[(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
-		)
-		t1 = time.time()
-		if not DEBUG:
-			total_bot_stats = [r[0] for r in results]
-			total_game_stats = [r[1] for r in results]
-			print_results(total_bot_stats, total_game_stats, t1-t0)
+
+	c = Redis(host = "elissa-0")
+	q = Queue(connection = c)
+
+	jobs = [q.enqueue(run_simulation, (i, bots_per_game, games_per_thread, bots)) for i in range(threads)]
+	# for i in range(10):
+		# jobs.append(q.enqueue(tasks.newkeys, 1024))
+	while any(not job.is_finished for job in jobs):
+		time.sleep(0.1)
+
+	results = [job.result for job in jobs]
+
+	# with Pool(threads) as pool:
+		# t0 = time.time()
+		# results = pool.starmap(
+			# run_simulation, 
+			# [(i, bots_per_game, games_per_thread, bots) for i in range(threads)]
+		# )
+		# t1 = time.time()
+	if not DEBUG:
+		total_bot_stats = [r[0] for r in results]
+		total_game_stats = [r[1] for r in results]
+		print_results(total_bot_stats, total_game_stats, t1-t0)
