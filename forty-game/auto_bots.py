@@ -689,7 +689,7 @@ class GoToSeventeenRollTenBot(Bot):
             yield True
         yield False
 
-
+'''
 # User: Mostly Harmless
 class NeoBot(Bot):
     def __init__(self, index, end_score):
@@ -731,7 +731,7 @@ class NeoBot(Bot):
             ind += 1
             self.last_state[-1] = (self.last_state[-1] + 1) % (len(self.last_state))
         return 1 + res
-
+'''
 
 # User: ploosu2
 class BrainBot(Bot):
