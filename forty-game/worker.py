@@ -3,7 +3,7 @@ from redis import Redis
 from rq import Connection, Worker
 
 def process():
-	c = Redis(host = 'elissa-0')
+	c = Redis(host = '192.168.10.200')
 	w = Worker(['default'], connection = c)
 	w.work()
 
