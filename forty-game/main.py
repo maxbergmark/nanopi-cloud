@@ -115,6 +115,8 @@ if __name__ == '__main__':
 			bots_per_game = int(sys.argv[i+1])
 		if arg == "-t" and len(sys.argv) > i+1 and sys.argv[i+1].isdigit():
 			threads = int(sys.argv[i+1])
+		if arg == "-p" and len(sys.argv) > i+1:
+			password = sys.argv[i+1]
 		if arg == "-d" or arg == "--download":
 			DOWNLOAD = True
 		if arg == "-A" or arg == "--ansi":
@@ -168,7 +170,7 @@ if __name__ == '__main__':
 
 
 
-	c = Redis(host = "elissa-0")
+	c = Redis(host = "elissa-0", password = password)
 	q = Queue(connection = c)
 
 	print("\tCurrently %d worker threads active\n" % (len(c.client_list())-1,))
