@@ -1,9 +1,11 @@
 from multiprocessing import cpu_count, Process
 from redis import Redis
 from rq import Connection, Worker
+import sys
 
 def process():
-	c = Redis(host = '127.0.0.1')
+	password = sys.argv[1]
+	c = Redis(host = '127.0.0.1', password = password)
 	w = Worker(['default'], connection = c)
 	w.work()
 
