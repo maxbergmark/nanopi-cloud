@@ -1,4 +1,5 @@
 from fabric.api import *
+import sys
 
 env.hosts = [
 	'elissa-0', 
@@ -20,4 +21,4 @@ def pull():
 
 @parallel
 def start():
-	run('cd Documents/nanopi-cloud/forty-game; python3 worker.py')
+	run('cd Documents/nanopi-cloud/forty-game; python3 worker.py %s %s' % (sys.argv[1], sys.argv[2]))
