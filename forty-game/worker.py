@@ -5,7 +5,7 @@ import sys
 
 def process():
 	password = sys.argv[1]
-	c = Redis(host = '127.0.0.1', password = password)
+	c = Redis(host = '127.0.0.1', port = 6399, password = password)
 	w = Worker(['default'], connection = c)
 	w.work()
 
