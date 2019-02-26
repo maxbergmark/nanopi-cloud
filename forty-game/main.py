@@ -162,19 +162,21 @@ if __name__ == '__main__':
 	print("\tStarting simulation with %d bots" % len(bots))
 	sim_str = "\tSimulating %d games with %d bots per game"
 	print(sim_str % (games, bots_per_game))
-	print("\tRunning simulation on %d threads" % threads)
+	print("\tRunning simulation as  %d queued jobs" % threads)
 	if len(sys.argv) == 1:
 		print("\tFor help running the script, use the -h flag")
-	print()
+
 
 
 	c = Redis(host = "elissa-0")
 	q = Queue(connection = c)
 
+	print("\tCurrently %d worker threads active\n" % (len(c.client_list())-1,))
+
 	t0 = time.time()
 	jobs = [q.enqueue(
-		run_simulation, 
-		i, bots_per_game, games_per_thread, bots, 
+		run_simulation,
+		i, bots_per_game, games_per_thread, bots,
 		ttl = 1e6, result_ttl = 1e6, timeout = 1e6
 	) for i in range(threads)]
 	while any(not job.is_finished for job in jobs):
