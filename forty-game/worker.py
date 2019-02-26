@@ -4,8 +4,9 @@ from rq import Connection, Worker
 import sys
 
 def process():
-	password = sys.argv[1]
-	c = Redis(host = '127.0.0.1', port = 6399, password = password)
+	ip = sys.argv[1]
+	password = sys.argv[2]
+	c = Redis(host = ip, port = 6399, password = password)
 	w = Worker(['default'], connection = c)
 	w.work()
 
