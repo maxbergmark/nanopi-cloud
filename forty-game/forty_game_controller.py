@@ -385,16 +385,16 @@ def print_time_stats(bot_timings, max_len):
 		key=lambda x: x[1], reverse = True)
 
 	delimiter_format = "\t+%s+%s+%s+"
-	delimiter_args = ("-"*(max_len), "-"*7, "-"*5)
+	delimiter_args = ("-"*(max_len), "-"*9, "-"*5)
 	delimiter_str = delimiter_format % delimiter_args
 	print(delimiter_str)
 
-	print("\t|%s%s|%7s|%5s|" % ("Bot", " "*(max_len-3), "Time", "Time%"))
+	print("\t|%s%s|%9s|%5s|" % ("Bot", " "*(max_len-3), "Time", "Time%"))
 	print(delimiter_str)
 	for bot, bot_time in sorted_times:
 		space_fill = " "*(max_len-len(bot))
 		perc = 100 * bot_time / total_time
-		print("\t|%s%s|%7.2f|%5.1f|" % (bot, space_fill, bot_time, perc))
+		print("\t|%s%s|%9.1f|%5.1f|" % (bot, space_fill, bot_time, perc))
 	print(delimiter_str)
 	print() 
 
